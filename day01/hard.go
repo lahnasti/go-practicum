@@ -2,7 +2,6 @@ package main
 
 import ("fmt"
 	"strings"
-	"unicode"
 	"bufio"
 	"os"
 )
@@ -16,6 +15,7 @@ func main () {
 
 	//разбитие текста на слова
 	words := strings.Fields(text)
+	// убрать знаки препинания
 
 	wordCount := make(map[string]int)
 
@@ -24,5 +24,5 @@ func main () {
 		wordCount[word]++
 	}
 
-	fmt.Printf("%s", wordCount)
+	fmt.Println(wordCount)
 }
