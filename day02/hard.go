@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"log"
 )
 
 //интерфейс, представляющий запись данных
@@ -39,14 +40,14 @@ func main() {
 
 	writer, err := newFile("file.txt")
 	if err != nil {
-		fmt.Println("Error creating", err)
+		log.Fatal("Error creating", err)
 		return
 	}
 
 	data := "Hello, GO!"
 	_, err = writer.Write([]byte(data))
 	if err != nil {
-		fmt.Println("Error writing", err)
+		log.Fatal("Error writing", err)
 		return
 	}
 	fmt.Println("Success")
