@@ -20,13 +20,13 @@ type Task struct {
 
 //структура для хранения задач
 type Task_Map struct {
-	TaskMap map[uuid.UUID]Task `json:"taskmap"`
+	TaskMap map[string]Task `json:"taskmap"`
 }
 
 var task Task
 
 //инициализация хранилища задач
-var taskMap = Task_Map{TaskMap: make(map[uuid.UUID]Task)}
+var taskMap = Task_Map{TaskMap: make(map[string]Task)}
 
 func main () {
 	r := gin.Default()
@@ -54,27 +54,32 @@ func createTask(c *gin.Context) {
 
 
 	// Добавление новой задачи в мапу
-	taskMap.TaskMap[task.UID] = task
+	taskMap.TaskMap[idString] = task
 
 	// Возвращение успешного ответа с добавленной задачей
-	c.JSON(http.StatusOK, gin.H{"message": "Added new task", "task": task, "id": task.UID})
+	c.JSON(http.StatusOK, gin.H{"message": "Added new task", "task": task})
 }
 
 func updateTask(c *gin.Context) {
-	var uid uuid.UUID = c.Param("id")
+	if err := c.ShouldBindBodyWithJSON(&task); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+			return
+	}
+	uid := c.Param("id")
 	taskMap.TaskMap[uid] = task
-	c.JSON(http.StatusOK, gin.H{"message": "Task updated", "id": id})
+	c.JSON(http.StatusOK, gin.H{"message": "Task updated", "id": uid})
 }
 
 func deleteTask(c *gin.Context) {
-	id := c.Param("id")
-	id, ok := taskMap.task[uid]
-	c.JSON(http.StatusOK, gin.H{"message": "Task deleted", "id": id})
+	uid := c.Param("id")
+	delete(taskMap.TaskMap, uid)
+	c.JSON(http.StatusOK, gin.H{"message": "Task deleted", "id": uid})
 }
 
 func getTask(c *gin.Context) {
-	id := c.Param("id")
-	c.JSON(http.StatusOK, gin.H{"message": "Task retrieved", "id": id})
+	uid := c.Param("id")
+	task := taskMap.TaskMap[uid]
+	c.JSON(http.StatusOK, gin.H{"message": "Task retrieved", "task": task})
 }
 
 

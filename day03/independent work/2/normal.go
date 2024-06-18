@@ -22,7 +22,7 @@ var list = List{TaskList: []Task{}}
 func main() {
 	r := gin.Default()
 	r.GET("/tasks", func(c *gin.Context) {
-		c.String(200, "Получить список задач: %s", list)
+		c.JSON(http.StatusOK, list)
 	})
 	r.POST("/tasks", createTask)
 	r.Run(":8080")
