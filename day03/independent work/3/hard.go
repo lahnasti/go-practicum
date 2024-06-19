@@ -7,6 +7,7 @@
 package main
 
 import (
+	"log"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -36,7 +37,10 @@ func main() {
 	r.PUT("/tasks/:id", updateTask)
 	r.DELETE("/tasks/:id", deleteTask)
 	r.GET("/tasks/:id", getTask)
-	r.Run(":8080")
+	err := r.Run(":8080")
+	if err != nil {
+		log.Fatalf("Server failed to start: %v", err)
+	}
 }
 
 func createTask(c *gin.Context) {
