@@ -15,11 +15,10 @@ type List struct {
 	TaskList []Task `json:"tasklist"`
 }
 
- // Переменная инициализируется как структура List с пустым срезом TaskList. 
-// Это позволяет сразу использовать list для добавления задач.
-var list = List{TaskList: []Task{}}
+
 
 func main() {
+	var list = List{TaskList: []Task{}}
 	r := gin.Default()
 	r.GET("/tasks", func(c *gin.Context) {
 		c.JSON(http.StatusOK, list)
@@ -29,6 +28,9 @@ func main() {
 }
 
 	func createTask(c *gin.Context) {
+		 // Переменная инициализируется как структура List с пустым срезом TaskList. 
+// Это позволяет сразу использовать list для добавления задач.
+var list = List{TaskList: []Task{}}
 
 		var task Task
 
